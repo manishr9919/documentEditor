@@ -7,13 +7,15 @@ router.use(authMiddleware);
 
 // CREATE
 router.post("/create", async (req, res) => {
+  console.log("Hello");
+  console.log(req.body);
   try {
     const { title, content, visibility } = req.body;
     const newDoc = new Document({
       title,
       content,
       visibility,
-      author: req.user._id,
+      author: req.user.userId,
     });
     await newDoc.save();
     console.log(newDoc);
@@ -25,7 +27,8 @@ router.post("/create", async (req, res) => {
 });
 
 // READ ALL
-router.get("/", async (req, res) => {
+router.get("/get", async (req, res) => {
+  console.log("Hello get");
   try {
     const docs = await Document.find();
     res.json(docs);
