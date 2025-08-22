@@ -19,7 +19,7 @@ export const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/signin/login",
+        "https://documenteditor-wgrt.onrender.com/signin/login",
         formData,
         {
           headers: {
@@ -30,13 +30,12 @@ export const Login = () => {
 
       // Save user data to sessionStorage
       sessionStorage.setItem("user", JSON.stringify(response.data.token));
-      
 
       // Show alert
       alert("Login Successful");
 
       // Redirect to home page
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       console.error(err);
       setError(

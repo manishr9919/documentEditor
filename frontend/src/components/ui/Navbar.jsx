@@ -11,7 +11,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("user");
-    
+
     if (token) {
       try {
         const decoded = jwtDecode(token);
@@ -44,8 +44,8 @@ export const Navbar = () => {
         <Box display={{ base: "block", md: "none" }}>
           <GiHamburgerMenu size="24px" />
         </Box>
-        <Box display={{ base: "block", md: "none" }}>
-          <Link to="/">Home</Link>
+        <Box>
+          <Link to="/home">Home</Link>
         </Box>
         {isLoggedIn && <Heading size="md">{email}</Heading>}
       </HStack>

@@ -20,15 +20,19 @@ export const SignUp = () => {
     setSuccessMsg("");
     console.log("form submited", formData);
     axios
-      .post("http://localhost:3000/signup/registration", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .post(
+        "https://documenteditor-wgrt.onrender.com/signup/registration",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         console.log(response.data);
         setSuccessMsg(response.data.message);
-        alert("Registration successful")
+        alert("Registration successful");
         navigate("/login");
       })
       .catch((error) => {

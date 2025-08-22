@@ -1,4 +1,4 @@
-import { Box, Heading, VStack, Text } from "@chakra-ui/react";
+import { Box, Heading, VStack, Text, Button, HStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -9,12 +9,15 @@ export const DocumemetList = () => {
   const [document, setDocument] = useState([]);
   const fetchData = async () => {
     try {
-      let response = await axios.get("http://localhost:3000/documents/get", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${parseToken}`,
-        },
-      });
+      let response = await axios.get(
+        "https://documenteditor-wgrt.onrender.com/documents/get",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${parseToken}`,
+          },
+        }
+      );
       console.log(response.data);
       setDocument(response.data);
     } catch (error) {
@@ -26,6 +29,21 @@ export const DocumemetList = () => {
     fetchData(); // ✅ Correct place to call it
   }, []);
 
+  const handleDelete = async (id) => {
+    console.log(id);
+    try {
+      await axios.delete(`http://localhost:3000/documents/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${parseToken}`,
+        },
+      });
+
+      // Remove deleted document from UI
+      setDocument((prevDocs) => prevDocs.filter((doc) => doc._id !== id));
+    } catch (error) {
+      console.error("Error deleting document:", error);
+    }
+  };
   return (
     <Box p={6}>
       <Heading mb={4}>Document List</Heading>
@@ -41,12 +59,26 @@ export const DocumemetList = () => {
             boxShadow="sm"
           >
             <Heading size="md" mb={2}>
-              {doc.title}
+              Title :{doc.title}
             </Heading>
-
-            <Text fontSize="sm" color="gray.600" mb={2}>
-              Visibility: {doc.visibility}
-            </Text>
+            {doc.visibility === "private" ? (
+              <Text color="red.500" fontWeight="bold">
+                {doc.visibility}
+              </Text>
+            ) : (
+              <Text color="green.500" fontWeight="bold">
+                {doc.visibility}
+              </Text>
+            )}
+            {doc.visibility === "private" ? (
+              <Text color="red.500" fontWeight="bold">
+                Updated_time :-{doc.updatedAt}
+              </Text>
+            ) : (
+              <Text color="green.500" fontWeight="bold">
+                {doc.updatedAt}
+              </Text>
+            )}
 
             <Box
               dangerouslySetInnerHTML={{ __html: doc.content }}
@@ -55,6 +87,25 @@ export const DocumemetList = () => {
               borderRadius="md"
               bg="gray.50"
             />
+            <HStack gap={{ base: "30px", md: "30px" }}>
+              <Button
+                bg="teal.200"
+                w={{ base: "100px", md: "150px", lg: "150px" }}
+                color="teal.950"
+                fontSize="2xl"
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={() => handleDelete(doc._id)}
+                bg="teal.200"
+                w={{ base: "100px", md: "150px", lg: "150px" }}
+                color="teal.950"
+                fontSize="2xl"
+              >
+                Delete
+              </Button>
+            </HStack>
           </Box>
         ))}
       </VStack>

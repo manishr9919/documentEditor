@@ -29,7 +29,7 @@ export const DocumentForm = () => {
     const documentData = { title, content, visibility };
 
     try {
-      await axios.post("http://localhost:3000/documents/create", documentData, {
+      await axios.post("https://documenteditor-wgrt.onrender.com/documents/create", documentData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${parseToken}`,
